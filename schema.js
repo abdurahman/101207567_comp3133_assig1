@@ -12,11 +12,21 @@ exports.typeDefs = gql `
         user_id: Float!
     }
 
+    type Bookings {
+        hotel_id: ID!
+        booking_date: String!
+        booking_start: String!
+        booking_end: String!
+        user_id: Float!
+    }
+
     type Query {
         getHotel: [Hotels]
         getHotelByID(hotel_id: ID!): [Hotels]
         getHotelByName(hotel_name: String!): [Hotels]
         getHotelByCity(city: String!): [Hotels]
+        getBooking: [Bookings]
+
     }
 
     type Mutation {
@@ -37,6 +47,17 @@ exports.typeDefs = gql `
             email: String!
             user_id: Float!): Hotels
         deleteHotel(hotel_id: ID!): Hotels
+        addBooking(hotel_id: ID!
+            booking_date: String!
+            booking_start: String!
+            booking_end: String!
+            user_id: Float!): Bookings
+        updateBooking(hotel_id: ID!
+            booking_date: String!
+            booking_start: String!
+            booking_end: String!
+            user_id: Float!): Bookings
+        deleteBooking(hotel_id: ID!): Bookings
     }
 `
 
@@ -49,18 +70,6 @@ type Users {
     email: String!
 }
 
-type Booking {
-    booking_date: Date!
-    booking_start: Date!
-    booking_end: Date!
-}
-
-getBookings(id: Int!,
-            booking_date: Date!,
-            booking_start: Date!,
-            booking_end: Date!,
-            user_id: Int!): [Booking, Users, Hotels]
-
             getUsers: [Users]
         getUsersByID(user_id: Int!): [Users]
         getUsersByUsername(username: String!): [Users]
@@ -72,8 +81,4 @@ getBookings(id: Int!,
             password: String!
             email: String!): Users
 
-            bookHotels(hotel_id: Int!
-            booking_date: Date!
-            booking_start: Date!
-            booking_end: Date!): Users
 */
