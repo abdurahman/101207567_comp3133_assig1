@@ -20,13 +20,20 @@ exports.typeDefs = gql `
         user_id: Float!
     }
 
+    type Users {
+        user_id: Float!
+        username: String!
+        password: String!
+        email: String!
+    }
+
     type Query {
         getHotel: [Hotels]
         getHotelByID(hotel_id: ID!): [Hotels]
         getHotelByName(hotel_name: String!): [Hotels]
         getHotelByCity(city: String!): [Hotels]
         getBooking: [Bookings]
-
+        getUser: [Users]
     }
 
     type Mutation {
@@ -58,27 +65,14 @@ exports.typeDefs = gql `
             booking_end: String!
             user_id: Float!): Bookings
         deleteBooking(hotel_id: ID!): Bookings
-    }
-`
-
-
-/*
-type Users {
-    user_id: Int!
-    username: String!
-    password: String!
-    email: String!
-}
-
-            getUsers: [Users]
-        getUsersByID(user_id: Int!): [Users]
-        getUsersByUsername(username: String!): [Users]
-        getUsersByPassword(password: String!): [Users]
-        getUsersByEmail(email: String!): [Users]
-
-        createUserProfile(user_id: Int!
+        addUser(user_id: Float!
             username: String!
             password: String!
             email: String!): Users
-
-*/
+        updateUser(user_id: Float!
+            username: String!
+            password: String!
+            email: String!): Users
+        deleteUser(user_id: Float!): Users
+    }
+`

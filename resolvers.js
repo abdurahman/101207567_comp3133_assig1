@@ -1,5 +1,6 @@
 const Hotels = require("./models/Hotels");
 const Bookings = require("./models/Bookings");
+const Users = require("./models/Users");
 
 exports.resolvers = {
   Query: {
@@ -18,6 +19,9 @@ exports.resolvers = {
     getBooking: async (parent, args) => {
       return await Bookings.find({});
     },
+    getUser: async (parent, args) => {
+        return await Users.find({})
+    }
   },
   Mutation: {
     createHotel: async (parent, args) => {
@@ -44,7 +48,17 @@ exports.resolvers = {
           user_id: args.user_id
         });
         return await newBookings.save();
-      },
+    },
+    addUser: async (parent, args) => {
+        console.log(args);
+        let newUser = new Users({
+            user_id: args.user_id,
+            username: args.username,
+            password: args.password,
+            email: args.email
+        });
+        return await newUser.save();
+    },
     updateHotel: async (parent, args) => {
       console.log(args);
       if (!args.hotel_id) {
@@ -104,6 +118,33 @@ exports.resolvers = {
         }
       );
     },
+    updateUser: async (parent, args) => {
+        console.log(args);
+        if (!args.user_id) {
+          return;
+        }
+        return await Users.findOneAndUpdate(
+          {
+            _id: args.user_id,
+          },
+          {
+            $set: {
+                user_id: args.user_id,
+                username: args.username,
+                password: args.password,
+                email: args.email
+            },
+          },
+          { new: true },
+          (err, users) => {
+            if (err) {
+              console.log("Something went wrong when updating the users");
+            } else {
+              return users;
+            }
+          }
+        );
+      },
     deleteHotel: async (parent, args) => {
       console.log(args);
       if (!args.hotel_id) {
@@ -118,5 +159,12 @@ exports.resolvers = {
       }
       return await Bookings.findByIdAndDelete(args.hotel_id);
     },
+    deleteUser: async (parent, args) => {
+        console.log(args);
+        if (!args.user_id) {
+          return JSON.stringify({ status: false, message: "No ID found" });
+        }
+        return await Users.findByIdAndDelete(args.user_id);
+      },
   },
 };
